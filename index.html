@@ -1,0 +1,125 @@
+<!DOCTYPE html><html lang='en'><head><meta charset='UTF-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no'>
+<title>The Inside Rip</title>
+<link rel='preconnect' href='https://fonts.googleapis.com'>
+<link rel='preconnect' href='https://fonts.gstatic.com' crossorigin>
+<link href='https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600&family=Oswald:wght@400;500;600;700&family=Teko:wght@500;700&display=swap' rel='stylesheet'>
+<style>
+:root {
+  --bg-main:#0b0b0d; --bg-mid:#101013; --bg-deep:#141418;
+  --bg-glow:rgba(70,70,80,0.35);
+  --panel:#1d1e22; --band:#26272c; --accent:#e01a1a; --hot:#f96302;
+  --win:#1a8a4a; --loss:#c0392b; --neutral:#5f6f68;
+  --card-bg:rgba(255,255,255,0.04); --card-line:rgba(255,255,255,0.18);
+  --box-bg:rgba(255,255,255,0.05); --box-line:rgba(255,255,255,0.12);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: 'Lexend', sans-serif;
+  color: #ffffff;
+  background: var(--bg-main);
+  background-image:
+    radial-gradient(ellipse at 50% 0%, var(--bg-glow) 0%, transparent 60%),
+    linear-gradient(180deg, var(--bg-main) 0%, var(--bg-mid) 50%, var(--bg-deep) 100%);
+  min-height: 100vh;
+  background-attachment: fixed;
+}
+.header { padding: 24px 16px 0; text-align: center; }
+.header-title {
+  font-family: 'Oswald', sans-serif; font-size: 36px; font-weight: 400;
+  color: #ffffff; letter-spacing: 4px; text-transform: uppercase; line-height: 1.2;
+}
+.header-sport { font-size: 10px; font-weight: 400; color: #ffffff; opacity: 0.6; letter-spacing: 3px; text-transform: uppercase; margin-top: 4px; }
+.header-handle { font-size: 10px; font-weight: 300; color: #ffffff; opacity: 0.5; letter-spacing: 1px; margin-top: 2px; }
+.header-date { font-size: 11px; font-weight: 400; color: #ffffff; opacity: 0.7; margin-top: 5px; }
+.tab-bar { display: flex; margin: 14px 16px 0; gap: 12px; max-width: 540px; margin-left: auto; margin-right: auto; }
+.tab-off {
+  flex: 1; text-align: center; padding: 10px 0; font-family: 'Lexend', sans-serif; font-size: 11px;
+  font-weight: 500; color: #ffffff; background: var(--panel);
+  border: 2px solid #ffffff; border-radius: 0; cursor: pointer;
+}
+.tab-off:hover { color: var(--hot); }
+.tab-on {
+  flex: 1; text-align: center; padding: 10px 0; font-family: 'Lexend', sans-serif; font-size: 11px;
+  font-weight: 600; color: #ffffff; background: var(--panel);
+  border: none; border-radius: 0; border-bottom: 3px solid var(--accent); cursor: pointer;
+}
+.content { padding: 0 16px; max-width: 540px; margin: 0 auto; }
+.tab-content { display: none; padding-top: 14px; }
+.tab-content.active { display: block; }
+.pnl-row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin-bottom: 10px; }
+.top-row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 10px; }
+.pnl-box { background: var(--box-bg); border: 1px solid var(--box-line); border-radius: 4px; padding: 10px 4px; text-align: center; }
+.pnl-label { font-size: 9px; font-weight: 400; color: #ffffff; opacity: 0.5; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px; }
+.pnl-rec { font-size: 10px; color: #ffffff; opacity: 0.6; margin-top: 4px; }
+.num { font-family: 'Oswald', sans-serif; font-weight: 400; color: #ffffff; }
+.bubble { display: inline-flex; align-items: center; justify-content: center; color: #ffffff; line-height: 1; border-radius: 4px; border: 2px solid #ffffff; font-family: 'Oswald', sans-serif; font-weight: 400; }
+.bub-hero { padding: 8px 28px 10px 18px; font-size: 50px; min-height: 60px; }
+.bub-lg { padding: 5px 16px 7px 8px; font-size: 26px; min-height: 36px; }
+.bub-lg28 { padding: 6px 12px; font-size: 28px; min-height: 38px; }
+.bub-md { padding: 3px 8px 5px; font-size: 18px; min-height: 26px; }
+.bg-g { background: var(--win); }
+.bg-r { background: var(--loss); }
+.bg-n { background: var(--neutral); }
+/* Header 2 (owner's pick): the band a step lighter than the tab panel,
+   a red edge stripe in place of baseball's dot. */
+.section-hdr {
+  background: var(--band, var(--panel));
+  border-left: 4px solid var(--accent);
+  padding: 6px 12px; margin: 16px 0 8px; font-family: 'Oswald', sans-serif; font-size: 14px;
+  font-weight: 400; letter-spacing: 1.5px; text-transform: uppercase; color: #ffffff;
+}
+.section-hdr:first-child { margin-top: 0; }
+.card {
+  background: var(--card-bg); border: 1px solid var(--card-line); border-radius: 4px;
+  padding: 11px 12px; margin-bottom: 8px;
+}
+.card-top { display: flex; justify-content: space-between; align-items: flex-start; }
+/* Teams 2 (owner's pick): the MATCHUP is the headline, Oswald caps;
+   the bet sits under it in the orange. */
+.card-teams { font-family: 'Oswald', sans-serif; font-size: 16px; font-weight: 500; letter-spacing: 0.5px; text-transform: uppercase; color: #ffffff; }
+.card-bet { font-size: 13px; color: var(--hot); font-weight: 600; margin-top: 2px; }
+.card-matchup { font-size: 14px; font-weight: 500; color: #ffffff; }
+.card-play { font-size: 12px; color: #ffffff; opacity: 0.7; }
+.card-info { font-size: 13px; color: #ffffff; opacity: 0.7; }
+.card-right { text-align: right; }
+.card-book { font-size: 9px; font-weight: 400; color: #ffffff; opacity: 0.4; margin-top: 3px; letter-spacing: 0.3px; }
+.hero {
+  background: var(--box-bg); border: 1px solid var(--box-line); border-radius: 8px;
+  padding: 16px 12px; text-align: center; margin-bottom: 10px;
+}
+.hero-label { font-size: 9px; font-weight: 400; color: #ffffff; opacity: 0.5; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 6px; }
+.hero-rec { font-size: 12px; color: #ffffff; opacity: 0.7; margin-top: 6px; }
+.hero-num { font-family: 'Oswald', sans-serif; font-size: 28px; font-weight: 400; color: #ffffff; }
+.chart-box { background: var(--box-bg); border: 1px solid var(--box-line); border-radius: 8px; padding: 12px; }
+.empty-state { text-align: center; padding: 48px 20px; font-family: 'Oswald', sans-serif; font-size: 14px; letter-spacing: 1.8px; text-transform: uppercase; color: rgba(255,255,255,0.5); }
+.footer {
+  max-width: 540px; margin: 20px auto 0; padding: 0 16px 20px;
+  font-size: 8px; color: #ffffff; opacity: 0.3; line-height: 1.6; text-align: center;
+}
+</style></head><body>
+<div class='header'><div class='header-title'>The Inside Rip</div>
+<div class='header-sport'>College Football</div>
+<div class='header-date'>Wednesday, August 26 &middot; 02:33 PM ET</div></div>
+<div class='tab-bar' id='tab-bar'>
+<div class='tab-off' data-tab='overview'>Overview</div>
+<div class='tab-off' data-tab='results'>Results</div>
+<div class='tab-on' data-tab='week'>This Week</div></div>
+<div class='content'>
+<div class='tab-content' id='tab-overview'><div class='hero'><div class='hero-label'>Season units</div><div><span class='bubble bub-hero bg-g'>0.0</span></div><div class='hero-rec'>0-0 &middot; 3 open</div></div><div class='pnl-row' id='ov-split'><div class='pnl-box'><div class='pnl-label'>Spread</div><div><div class='hero-num'>&mdash;</div></div><div class='pnl-rec'>0-0</div></div><div class='pnl-box'><div class='pnl-label'>Total</div><div><div class='hero-num'>&mdash;</div></div><div class='pnl-rec'>0-0</div></div><div class='pnl-box'><div class='pnl-label'>TV</div><div><div class='hero-num'>&mdash;</div></div><div class='pnl-rec'>0-0</div></div></div></div>
+<div class='tab-content' id='tab-results'><div class='empty-state'>Nothing settled yet.</div></div>
+<div class='tab-content active' id='tab-week'><div class='top-row'><div class='pnl-box'><div class='pnl-label'>On the board</div><div class='hero-num'>3</div></div><div class='pnl-box'><div class='pnl-label'>First kick</div><div class='hero-num'>Sat Aug 29</div></div></div><div class='section-hdr'>TV</div><div class='card'><div class='card-top'><div><div class='card-teams'>North Carolina @ TCU</div><div class='card-bet'>North Carolina +8.5</div><div class='card-info'>Sat Aug 29 &middot; 1u</div></div><div class='card-right'><div class='card-book'>Bovada</div></div></div></div><div class='card'><div class='card-top'><div><div class='card-teams'>NC State @ Virginia</div><div class='card-bet'>NC State +6</div><div class='card-info'>Sat Aug 29 &middot; 1u</div></div><div class='card-right'><div class='card-book'>Bovada</div></div></div></div><div class='card'><div class='card-top'><div><div class='card-teams'>Hawai'i @ Stanford</div><div class='card-bet'>Hawai'i +4</div><div class='card-info'>Sat Aug 29 &middot; 1u</div></div><div class='card-right'><div class='card-book'>Bovada</div></div></div></div></div>
+</div>
+<div class='footer'>All plays are 1 unit unless the row says otherwise. Money is at an ASSUMED &minus;110 &mdash; CFBD carries no per-side prices. Prices are the board's at the moment each row was written. Generated by scripts/ledger.py from ops/LEDGER.jsonl; hand edits die on the next run.</div>
+<script>
+document.getElementById('tab-bar').addEventListener('click', function(e) {
+  var t = e.target;
+  if (!t.dataset.tab) return;
+  document.querySelectorAll('#tab-bar > div').forEach(function(d){ d.className = 'tab-off'; });
+  t.className = 'tab-on';
+  document.querySelectorAll('.tab-content').forEach(function(c){ c.classList.remove('active'); });
+  document.getElementById('tab-' + t.dataset.tab).classList.add('active');
+});
+</script>
+</body></html>
