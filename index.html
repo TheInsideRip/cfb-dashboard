@@ -9,7 +9,7 @@
   --bg-main:#0b0b0d; --bg-mid:#101013; --bg-deep:#141418;
   --bg-glow:rgba(70,70,80,0.35);
   --panel:#1d1e22; --band:#26272c; --accent:#e01a1a; --hot:#f96302;
-  --win:#1a8a4a; --loss:#c0392b; --neutral:#5f6f68;
+  --win:#2f9e5e; --loss:#c0392b; --neutral:#7d8b85;
   --card-bg:rgba(255,255,255,0.04); --card-line:rgba(255,255,255,0.18);
   --box-bg:rgba(255,255,255,0.05); --box-line:rgba(255,255,255,0.12);
 }
@@ -54,14 +54,32 @@ body {
 .pnl-label { font-size: 9px; font-weight: 400; color: #ffffff; opacity: 0.5; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px; }
 .pnl-rec { font-size: 10px; color: #ffffff; opacity: 0.6; margin-top: 4px; }
 .num { font-family: 'Oswald', sans-serif; font-weight: 400; color: #ffffff; }
-.bubble { display: inline-flex; align-items: center; justify-content: center; color: #ffffff; line-height: 1; border-radius: 4px; border: 2px solid #ffffff; font-family: 'Oswald', sans-serif; font-weight: 400; }
-.bub-hero { padding: 8px 28px 10px 18px; font-size: 50px; min-height: 60px; }
-.bub-lg { padding: 5px 16px 7px 8px; font-size: 26px; min-height: 36px; }
-.bub-lg28 { padding: 6px 12px; font-size: 28px; min-height: 38px; }
+/* THE BUBBLE IS THE BOARD'S BLACK WITH A THIN WHITE LINE; THE NUMBER CARRIES
+   THE COLOUR (owner, 2026-08-29, replacing baseball's solid fill: "matte
+   green or red number... the bubble itself the same background color as the
+   board, outlined in white", then "1.5px" and "keep it as is with regard to
+   the black"). `nowrap` is not decoration: "6-5" breaks at the hyphen, and a
+   Last-10 bubble in a narrow box was measured stacking onto two lines. */
+.bubble { display: inline-flex; align-items: center; justify-content: center; color: #ffffff; line-height: 1; border-radius: 4px; border: 1.5px solid #ffffff; background: var(--bg-main); font-family: 'Oswald', sans-serif; font-weight: 500; white-space: nowrap; }
+/* VERTICAL PADDING IS UNEVEN ON PURPOSE AND THE NUMBERS ARE MEASURED, NOT
+   GUESSED. With line-height 1 the glyphs' ink centre sits ~0.055em BELOW the
+   box centre -- digits and caps have no descender, so the line box carries
+   empty space underneath them -- and the extra bottom padding lifts the ink
+   back. Solved in a browser against Oswald's real ink metrics (canvas
+   actualBoundingBox* against a baseline probe), 2026-08-29: vertical error
+   0.000px on every string at all three sizes. Horizontal padding is even --
+   the old 28/18 split pushed the hero number 5px off-centre for no reason.
+   The sub-2px ink drift left at hero size is glyph side bearings ('1' and
+   '+' are narrow in their advance); centring ink per string instead would
+   make the number jitter horizontally as the value changed. Padding totals
+   are preserved, so no bubble changed size. */
+.bub-hero { padding: 6px 23px 12px; font-size: 50px; min-height: 60px; }
+.bub-lg { padding: 5px 12px 7px; font-size: 26px; min-height: 36px; }
+.bub-lg28 { padding: 5px 12px 7px; font-size: 28px; min-height: 38px; }
 .bub-md { padding: 3px 8px 5px; font-size: 18px; min-height: 26px; }
-.bg-g { background: var(--win); }
-.bg-r { background: var(--loss); }
-.bg-n { background: var(--neutral); }
+.bg-g { color: var(--win); }
+.bg-r { color: var(--loss); }
+.bg-n { color: var(--neutral); }
 /* Header 2 (owner's pick): the band a step lighter than the tab panel,
    a red edge stripe in place of baseball's dot. */
 .section-hdr {
@@ -92,6 +110,12 @@ body {
 .hero-label { font-size: 9px; font-weight: 400; color: #ffffff; opacity: 0.5; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 6px; }
 .hero-rec { font-size: 12px; color: #ffffff; opacity: 0.7; margin-top: 6px; }
 .hero-num { font-family: 'Oswald', sans-serif; font-size: 28px; font-weight: 400; color: #ffffff; }
+/* The First-kick box carries a DATE AND A TIME ("Sat Aug 29, 12:00 PM"), not
+   a count, so at 28px it wrapped onto two or three lines and made its box
+   tower over the one beside it. Smaller text, one line, boxes level again
+   (owner, 2026-08-29: "decrease the size of the text so the box isn't so
+   big"). Verified at a 375px phone width, where the wrap actually bit. */
+.hero-num.kick { font-size: 16px; letter-spacing: 0.3px; }
 .chart-box { background: var(--box-bg); border: 1px solid var(--box-line); border-radius: 8px; padding: 12px; }
 .empty-state { text-align: center; padding: 48px 20px; font-family: 'Oswald', sans-serif; font-size: 14px; letter-spacing: 1.8px; text-transform: uppercase; color: rgba(255,255,255,0.5); }
 .footer {
@@ -101,7 +125,7 @@ body {
 </style></head><body>
 <div class='header'><div class='header-title'>The Inside Rip</div>
 <div class='header-sport'>College Football</div>
-<div class='header-date'>Saturday, August 29 &middot; 09:01 AM ET</div></div>
+<div class='header-date'>Saturday, August 29 &middot; 03:45 PM ET</div></div>
 <div class='tab-bar' id='tab-bar'>
 <div class='tab-off' data-tab='overview'>Overview</div>
 <div class='tab-off' data-tab='results'>Results</div>
@@ -109,7 +133,7 @@ body {
 <div class='content'>
 <div class='tab-content' id='tab-overview'><div class='hero'><div class='hero-label'>Season units</div><div><span class='bubble bub-hero bg-g'>0.0</span></div><div class='hero-rec'>0-0 &middot; 3 open</div></div><div class='pnl-row' id='ov-split'><div class='pnl-box'><div class='pnl-label'>Spread</div><div><div class='hero-num'>&mdash;</div></div><div class='pnl-rec'>0-0</div></div><div class='pnl-box'><div class='pnl-label'>Total</div><div><div class='hero-num'>&mdash;</div></div><div class='pnl-rec'>0-0</div></div><div class='pnl-box'><div class='pnl-label'>TV</div><div><div class='hero-num'>&mdash;</div></div><div class='pnl-rec'>0-0</div></div></div></div>
 <div class='tab-content' id='tab-results'><div class='empty-state'>Nothing settled yet.</div></div>
-<div class='tab-content active' id='tab-week'><div class='top-row'><div class='pnl-box'><div class='pnl-label'>On the board</div><div class='hero-num'>3</div></div><div class='pnl-box'><div class='pnl-label'>First kick</div><div class='hero-num'>Sat Aug 29, 12:00 PM</div></div></div><div class='section-hdr'>TV</div><div class='card'><div class='card-top'><div><div class='card-teams'>North Carolina @ TCU</div><div class='card-bet'>North Carolina +8.5 (&minus;110)</div><div class='card-info'>Sat Aug 29, 12:00 PM &middot; 1u</div></div><div class='card-right'><div class='card-book'>Bovada</div><div class='card-tv'>Disney+</div></div></div></div><div class='card'><div class='card-top'><div><div class='card-teams'>NC State @ Virginia</div><div class='card-bet'>NC State +6 (&minus;110)</div><div class='card-info'>Sat Aug 29, 3:30 PM &middot; 1u</div></div><div class='card-right'><div class='card-book'>Bovada</div><div class='card-tv'>ESPN</div></div></div></div><div class='card'><div class='card-top'><div><div class='card-teams'>Hawai'i @ Stanford</div><div class='card-bet'>Hawai'i +4 (&minus;110)</div><div class='card-info'>Sat Aug 29, 7:00 PM &middot; 1u</div></div><div class='card-right'><div class='card-book'>Bovada</div><div class='card-tv'>ACC Network</div></div></div></div></div>
+<div class='tab-content active' id='tab-week'><div class='top-row'><div class='pnl-box'><div class='pnl-label'>On the board</div><div class='hero-num'>3</div></div><div class='pnl-box'><div class='pnl-label'>First kick</div><div class='hero-num kick'>Sat Aug 29, 12:00 PM</div></div></div><div class='section-hdr'>TV</div><div class='card'><div class='card-top'><div><div class='card-teams'>North Carolina @ TCU</div><div class='card-bet'>North Carolina +8.5 (&minus;110)</div><div class='card-info'>Sat Aug 29, 12:00 PM &middot; 1u</div></div><div class='card-right'><div class='card-book'>Bovada</div><div class='card-tv'>Disney+</div></div></div></div><div class='card'><div class='card-top'><div><div class='card-teams'>NC State @ Virginia</div><div class='card-bet'>NC State +6 (&minus;110)</div><div class='card-info'>Sat Aug 29, 3:30 PM &middot; 1u</div></div><div class='card-right'><div class='card-book'>Bovada</div><div class='card-tv'>ESPN</div></div></div></div><div class='card'><div class='card-top'><div><div class='card-teams'>Hawai'i @ Stanford</div><div class='card-bet'>Hawai'i +4 (&minus;110)</div><div class='card-info'>Sat Aug 29, 7:00 PM &middot; 1u</div></div><div class='card-right'><div class='card-book'>Bovada</div><div class='card-tv'>ACC Network</div></div></div></div></div>
 </div>
 <div class='footer'>All plays are 1 unit unless the row says otherwise. Money is at an ASSUMED &minus;110 &mdash; CFBD carries no per-side prices. Prices are the board's at the moment each row was written. Generated by scripts/ledger.py from ops/LEDGER.jsonl; hand edits die on the next run.</div>
 <script>
