@@ -96,7 +96,14 @@ body {
 .card-top { display: flex; justify-content: space-between; align-items: flex-start; }
 /* Teams 2 (owner's pick): the MATCHUP is the headline, Oswald caps;
    the bet sits under it in the orange. */
-.card-teams { font-family: 'Oswald', sans-serif; font-size: 16px; font-weight: 500; letter-spacing: 0.5px; text-transform: uppercase; color: #ffffff; }
+.card-teams { font-family: 'Oswald', sans-serif; font-size: 16px; font-weight: 500; letter-spacing: 0.5px; text-transform: uppercase; color: #ffffff; display: flex; align-items: center; }
+/* The provisional chip (owner, 2026-09-05: solid disc, small, trailing the
+   game name -- mockup 4/look A approved byte-for-byte). Colors are the
+   board's existing RESULT colors; the chrome red/orange stay chrome. */
+.chip { margin-left: 28px; flex: 0 0 auto; }
+.chip-w { fill: var(--win); }
+.chip-l { fill: var(--loss); }
+.chip-p { fill: var(--neutral); }
 .card-bet { font-size: 13px; color: var(--hot); font-weight: 600; margin-top: 2px; }
 .card-matchup { font-size: 14px; font-weight: 500; color: #ffffff; }
 .card-play { font-size: 12px; color: #ffffff; opacity: 0.7; }
@@ -125,7 +132,7 @@ body {
 </style></head><body>
 <div class='header'><div class='header-title'>The Inside Rip</div>
 <div class='header-sport'>College Football</div>
-<div class='header-date'>Saturday, September 05 &middot; 10:17 AM ET</div></div>
+<div class='header-date'>Saturday, September 05 &middot; 12:36 PM ET</div></div>
 <div class='tab-bar' id='tab-bar'>
 <div class='tab-off' data-tab='overview'>Overview</div>
 <div class='tab-off' data-tab='results'>Results</div>
